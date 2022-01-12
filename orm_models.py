@@ -1,10 +1,11 @@
+from sqlalchemy.sql.expression import null
 from alert_db import Base, engine
 from sqlalchemy import Integer, Text, Column, DateTime
 
 
 class Alert(Base):
-    alert_id = Column(Integer, primary_key=True)
-    alert_nm = Column(Text)
+    alert_id = Column(Integer, primary_key=True, autoincrement=True)
+    alert_nm = Column(Text, nullable=False)
 
 
 class LkpAlertStatus(Base):

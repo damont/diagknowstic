@@ -33,3 +33,12 @@ class SABase(object):
     
 
 Base = declarative_base(cls=SABase)
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

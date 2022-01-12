@@ -6,8 +6,12 @@ class AlertBase(BaseModel):
     
     class Config:
         orm_mode = True
+        
+
+class AlertCreate(AlertBase):
+    pass
     
 
-class Alert(AlertBase):
+class AlertPyd(AlertBase):
     alert_id: int
 
