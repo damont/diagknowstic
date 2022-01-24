@@ -12,3 +12,9 @@ def change_alert_status(db: Session, alert_nm: str, status: str):
     old_status.status = LkpAlertStatus(status_nm=status)
     
     db.commit()
+
+
+def get_all_alerts(db: Session):
+    return db.query(Alert.alert_nm, AlertStatus.status_id).\
+        join(AlertStatus, AlertStatus.alert_id == Alert.alert_id).\
+        all()

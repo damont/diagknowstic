@@ -4,4 +4,22 @@
 
 Hello this is the page to view your alerts!
 
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+        <th>Alert</th>
+        <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for alert in alerts %}
+        <tr>
+            <td>{{ alert.alert_nm }}</td>
+            <td>{{ alert.status_id }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
 {% endblock %}

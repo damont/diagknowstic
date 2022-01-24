@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 
 from pyd_models import AlertBase, AlertPyd
 from orm_creates import get_alert, create_alert, create_alert_status
-from orm_actions import change_alert_status
+from orm_actions import change_alert_status, get_all_alerts
 from alert_db import get_db
 
 app = FastAPI()
@@ -14,9 +14,11 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/")
-def alerts(request: Request):
+def alerts(request: Request, db: Session = Depends(get_db)):
+    alerts = get_all_alerts(db)
     return templates.TemplateResponse("alerts.html", context={
-        "request": request
+        "request": request,
+        "alerts": alerts
     })
 
 
