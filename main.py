@@ -1,7 +1,8 @@
 # main.py
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
+from fastapi.templating import Jinja2Templates
 
 from pyd_models import AlertBase, AlertPyd
 from orm_creates import get_alert, create_alert, create_alert_status
@@ -9,6 +10,15 @@ from orm_actions import change_alert_status
 from alert_db import get_db
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/")
+def alerts(request: Request):
+    return templates.TemplateResponse("alerts.html", context={
+        "request": request
+    })
+
 
 @app.post("/register", response_model=AlertPyd)
 def register(alert : AlertBase, db: Session = Depends(get_db)):
