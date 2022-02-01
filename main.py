@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 
 from pyd_models import AlertBase, AlertPyd
 from orm_creates import get_alert, create_alert, create_alert_status
-from orm_actions import change_alert_status, get_all_alerts
+from orm_actions import change_alert_status, get_all_alerts, get_alert_history
 from alert_db import get_db
 
 app = FastAPI()
@@ -20,6 +20,15 @@ def alerts(request: Request, db: Session = Depends(get_db)):
         "request": request,
         "alerts": alerts
     })
+
+
+@app.get("/history")
+def history(alert: str, request: Request, db: Session = Depends(get_db)):
+    alerts = get_alert_history(db, alert)
+    return templates.TemplateResponse("alert.html", context={
+        "request": request,
+        "alerts": alerts
+    })    
 
 
 @app.post("/register", response_model=AlertPyd)
