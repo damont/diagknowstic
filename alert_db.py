@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, DateTime
+from sqlalchemy.sql import func
 import re
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./alert_app.db"
@@ -29,7 +30,18 @@ class SABase(object):
     def __tablename__(cls):
         return _cc2jl(cls.__name__)
 
-    post_time = Column(DateTime)
+    @classmethod
+    def get_or_create(cls, session, **kwargs):
+        instance = session.query(cls).filter_by(**kwargs).first()
+        if instance:
+            return instance
+        else:
+            instance = cls(**kwargs)
+            session.add(instance)
+            session.commit()
+            return instance
+
+    post_time = Column(DateTime, server_default=func.now())
     
 
 Base = declarative_base(cls=SABase)

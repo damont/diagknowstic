@@ -1,0 +1,27 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+This is the alert history!
+
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+        <th>Alert</th>
+        <th>Status</th>
+        <th>Post Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for alert in alerts %}
+        <tr>
+            <td>{{ alert.alert_nm }}</td>
+            <td>{{ alert.status_id }}</td>
+            <td>{{ alert.post_time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

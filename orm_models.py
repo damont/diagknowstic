@@ -6,18 +6,19 @@ from sqlalchemy.orm import relationship
 
 class Alert(Base):
     alert_id = Column(Integer, primary_key=True, autoincrement=True)
-    alert_nm = Column(Text, nullable=False)
+    alert_nm = Column(Text, nullable=False, unique=True)
 
 
 class LkpAlertStatus(Base):
     status_id = Column(Integer, primary_key=True)
-    status_nm = Column(Text)
+    status_nm = Column(Text, nullable=False, unique=True)
+    status_color = Column(Text, nullable=False, default='grey')
 
 
 class AlertStatus(Base):
     alert_status_id = Column(Integer, primary_key=True)
-    alert_id = Column(Integer, ForeignKey(Alert.alert_id))
-    status_id = Column(Integer, ForeignKey(LkpAlertStatus.status_id))
+    alert_id = Column(Integer, ForeignKey(Alert.alert_id), nullable=False)
+    status_id = Column(Integer, ForeignKey(LkpAlertStatus.status_id), nullable=False)
     
     alert = relationship("Alert")
     status = relationship("LkpAlertStatus")

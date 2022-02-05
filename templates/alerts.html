@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+Hello this is the page to view your alerts!
+
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+        <th>Alert</th>
+        <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for alert in alerts %}
+        <tr>
+            <td><a href="history?alert={{alert.alert_nm}}">{{ alert.alert_nm }}</a></td>
+            <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
