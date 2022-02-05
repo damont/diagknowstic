@@ -12,6 +12,7 @@ class Alert(Base):
 class LkpAlertStatus(Base):
     status_id = Column(Integer, primary_key=True)
     status_nm = Column(Text, nullable=False, unique=True)
+    status_color = Column(Text, nullable=False, default='grey')
 
 
 class AlertStatus(Base):

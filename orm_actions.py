@@ -16,8 +16,11 @@ def change_alert_status(db: Session, alert_nm: str, status: str):
 
 
 def get_all_alerts(db: Session):
-    return db.query(Alert.alert_nm, AlertStatus.status_id).\
+    return db.query(Alert.alert_nm, 
+                    LkpAlertStatus.status_nm,
+                    LkpAlertStatus.status_color).\
         join(AlertStatus, AlertStatus.alert_id == Alert.alert_id).\
+        join(LkpAlertStatus, LkpAlertStatus.status_id == AlertStatus.status_id).\
         all()
 
 
