@@ -1,5 +1,5 @@
 from sqlalchemy.sql.expression import null
-from alert_db import Base, engine
+from alert_db import Base, engine, get_db
 from sqlalchemy import Integer, Text, Column, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -39,3 +39,11 @@ class AlertHistory(Base):
     
 def init_db():
     Base.metadata.create_all(engine)
+
+    # Hacky way to get database session from get_db function.
+    for session in get_db():
+        session.add(LkpAlertStatus(status_nm='nominal', status_color='green'))
+        session.add(LkpAlertStatus(status_nm='alert', status_color='red'))
+        session.add(LkpAlertStatus(status_nm='silenced', status_color='orange'))
+        session.add(LkpAlertStatus(status_nm='off', status_color='grey'))
+        session.commit()
