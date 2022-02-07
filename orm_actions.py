@@ -24,10 +24,14 @@ def get_all_alerts(db: Session):
         all()
 
 
-def get_alert_history(db: Session, alert_nm: str):
+def get_alert_history(db: Session, alert_nm: str, limit=1000):
     return db.query(AlertHistory.status_id,
                     AlertHistory.post_time,
                     Alert.alert_nm).\
         join(Alert, Alert.alert_id == AlertHistory.alert_id).\
         filter(Alert.alert_nm == alert_nm).\
-        order_by(desc(AlertHistory.alert_history_id)).all()
+        order_by(desc(AlertHistory.alert_history_id)).limit(limit)
+        
+
+def get_alert(db: Session, alert_nm: str):
+    return Alert.get_or_create(session=db, alert_nm=alert_nm)

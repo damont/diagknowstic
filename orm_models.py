@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 class Alert(Base):
     alert_id = Column(Integer, primary_key=True, autoincrement=True)
     alert_nm = Column(Text, nullable=False, unique=True)
+    alert_desc = Column(Text, nullable=False)
 
 
 class LkpAlertStatus(Base):

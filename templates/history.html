@@ -2,13 +2,8 @@
 
 {% block content %}
 
+This is the alert history!
 
-<h2>{{ alert.alert_nm }}</h2>
-<a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
-
-<p>{{ alert.alert_desc }}</p>
-
-<h3>Last Three Events</h3>
 <table class="ui celled padded table">
     <thead>
         <tr>
@@ -26,6 +21,5 @@
     </tbody>
 </table>
 
-<a href="history?alert={{alert.alert_nm}}">See all history</a>
 
 {% endblock %}
