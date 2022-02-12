@@ -2,12 +2,16 @@
 
 {% block content %}
 
-This is the alert history!
 
+<h2>{{ alert.alert_nm }}</h2>
+<p>{{ alert.alert_desc }}</p>
+
+<a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
+
+<h3>Last Three Events</h3>
 <table class="ui celled padded table">
     <thead>
         <tr>
-        <th>Alert</th>
         <th>Status</th>
         <th>Post Time</th>
         </tr>
@@ -15,13 +19,13 @@ This is the alert history!
     <tbody>
         {% for alert in alerts %}
         <tr>
-            <td>{{ alert.alert_nm }}</td>
-            <td>{{ alert.status_id }}</td>
+            <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
             <td>{{ alert.post_time }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
+<a href="history?alert={{alert.alert_nm}}">See all history</a>
 
 {% endblock %}

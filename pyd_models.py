@@ -1,8 +1,12 @@
 from pydantic import BaseModel
 
 
-class AlertBase(BaseModel):
+class AlertNm(BaseModel):
     alert_nm: str
+
+
+class AlertBase(AlertNm):
+    alert_desc: str
     
     class Config:
         orm_mode = True

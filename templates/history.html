@@ -2,21 +2,21 @@
 
 {% block content %}
 
-<h1>Diagknowstic</h1>
-<h2>Know your systems</h2>
+<a href="alert?alert={{alert}}"><h2 style="color:black">{{ alert }}</h2></a>
 
+<h3>All History</h3>
 <table class="ui celled padded table">
     <thead>
         <tr>
-        <th>Alert</th>
         <th>Status</th>
+        <th>Post Time</th>
         </tr>
     </thead>
     <tbody>
         {% for alert in alerts %}
         <tr>
-            <td><a href="alert?alert={{alert.alert_nm}}">{{ alert.alert_nm }}</a></td>
             <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
+            <td>{{ alert.post_time }}</td>
         </tr>
         {% endfor %}
     </tbody>
