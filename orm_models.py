@@ -45,6 +45,6 @@ def init_db():
     for session in get_db():
         session.add(LkpAlertStatus(status_nm='nominal', status_color='green'))
         session.add(LkpAlertStatus(status_nm='alert', status_color='red'))
-        session.add(LkpAlertStatus(status_nm='silenced', status_color='orange'))
+        session.add(LkpAlertStatus(status_nm='silence', status_color='orange'))
         session.add(LkpAlertStatus(status_nm='off', status_color='grey'))
         session.commit()

@@ -4,9 +4,9 @@
 
 
 <h2>{{ alert.alert_nm }}</h2>
-<a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
-
 <p>{{ alert.alert_desc }}</p>
+
+<a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
 
 <h3>Last Three Events</h3>
 <table class="ui celled padded table">
@@ -19,7 +19,7 @@
     <tbody>
         {% for alert in alerts %}
         <tr>
-            <td>{{ alert.status_id }}</td>
+            <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
             <td>{{ alert.post_time }}</td>
         </tr>
         {% endfor %}
