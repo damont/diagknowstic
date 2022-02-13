@@ -11,7 +11,7 @@ def create_alert(db: Session, alert: AlertCreate):
     return Alert.get_or_create(session=db, **alert.dict())
 
 def create_alert_status(db: Session, alert: Alert):
-    status = LkpAlertStatus.get_or_create(session=db, status_nm='silence')
+    status = LkpAlertStatus.get_or_create(session=db, status_nm='off')
     alert_status = AlertStatus(alert=alert, status=status)
     db.add(alert_status)
     db.commit()

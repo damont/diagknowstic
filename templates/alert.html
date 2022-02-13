@@ -8,6 +8,16 @@
 
 <a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
 
+
+<div class="ui form">
+    <div class="field">
+        <label>Notes</label>
+        <textarea>{{ alert.notes }}</textarea>
+        <div class="ui submit button">Update</div>
+    </div>
+</div>
+
+
 <h3>Last Three Events</h3>
 <table class="ui celled padded table">
     <thead>

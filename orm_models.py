@@ -20,6 +20,7 @@ class AlertStatus(Base):
     alert_status_id = Column(Integer, primary_key=True)
     alert_id = Column(Integer, ForeignKey(Alert.alert_id), nullable=False)
     status_id = Column(Integer, ForeignKey(LkpAlertStatus.status_id), nullable=False)
+    notes = Column(Text, nullable=False, default='')
     
     alert = relationship("Alert")
     status = relationship("LkpAlertStatus")
@@ -29,13 +30,16 @@ class AlertHistory(Base):
     alert_history_id = Column(Integer, primary_key=True)
     alert_id = Column(Integer)
     status_id = Column(Integer)
+    notes = Column(Text)
     
     alert_id = Column(Integer, ForeignKey(Alert.alert_id))
     status_id = Column(Integer, ForeignKey(LkpAlertStatus.status_id))
     
     @classmethod
     def from_alert(cls, alert: AlertStatus):
-        return AlertHistory(alert_id=alert.alert_id, status_id=alert.status_id)
+        return AlertHistory(alert_id=alert.alert_id, 
+                            status_id=alert.status_id,
+                            notes=alert.notes)
 
     
 def init_db():
