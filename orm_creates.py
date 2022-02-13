@@ -21,7 +21,9 @@ def get_alert_page(db: Session, alert_nm: str):
     return db.query(Alert.alert_nm, 
                     Alert.alert_desc,
                     LkpAlertStatus.status_nm,
-                    LkpAlertStatus.status_color).\
+                    LkpAlertStatus.status_color,
+                    AlertStatus.notes,
+                    AlertStatus.alert_id).\
         join(AlertStatus, AlertStatus.alert_id == Alert.alert_id).\
         join(LkpAlertStatus, LkpAlertStatus.status_id == AlertStatus.status_id).\
         filter(Alert.alert_nm == alert_nm).first()

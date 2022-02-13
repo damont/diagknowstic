@@ -9,13 +9,14 @@
 <a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
 
 
-<div class="ui form">
+
+<form class="ui form" method="POST">
     <div class="field">
         <label>Notes</label>
-        <textarea>{{ alert.notes }}</textarea>
-        <div class="ui submit button">Update</div>
+        <textarea name="alert_notes">{{ alert.notes }}</textarea>
+        <input type="submit" value="Update" class="ui submit button">
     </div>
-</div>
+</form>
 
 
 <h3>Last Three Events</h3>

@@ -47,8 +47,17 @@ def init_db():
 
     # Hacky way to get database session from get_db function.
     for session in get_db():
+        off = LkpAlertStatus(status_nm='off', status_color='grey')
         session.add(LkpAlertStatus(status_nm='nominal', status_color='green'))
         session.add(LkpAlertStatus(status_nm='alert', status_color='red'))
         session.add(LkpAlertStatus(status_nm='silence', status_color='orange'))
-        session.add(LkpAlertStatus(status_nm='off', status_color='grey'))
+        session.add(off)
+        session.commit()
+
+        alert = Alert(alert_nm='pricing', alert_desc='Is everything OK?')
+        alert_status = AlertStatus()
+        alert_status.alert = alert
+        alert_status.status = off
+
+        session.add(alert_status)
         session.commit()
