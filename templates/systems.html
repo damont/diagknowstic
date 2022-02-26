@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+<h1>Diagknowstic</h1>
+<h2>Know your systems</h2>
+
+<table class="ui celled padded table">
+    <thead>
+        <tr>
+        <th>Sytem</th>
+        <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for system in systems %}
+        <tr>
+            <td><a href="systempage?system={{system.system_nm}}">{{ system.system_nm }}</a></td>
+            <td><a class="ui {{system.status_color}} label">{{ system.status_nm }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

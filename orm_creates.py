@@ -1,14 +1,26 @@
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 
-from pyd_models import AlertCreate
-from orm_models import Alert, AlertStatus, LkpAlertStatus
+from pyd_models import AlertCreate, SystemBase
+from orm_models import Alert, AlertStatus, LkpAlertStatus, System
 
 
 def get_alert(db: Session, alert_nm: str):
     return db.query(Alert).filter(Alert.alert_nm == alert_nm).first()
 
+def get_system(db: Session, system_nm: str):
+    return db.query(System).filter(System.system_nm == system_nm).first()
+
 def create_alert(db: Session, alert: AlertCreate):
+    
+    
+    
+    
+    
     return Alert.get_or_create(session=db, **alert.dict())
+
+def create_system(db: Session, system: SystemBase):
+    return System.get_or_create(session=db, **system.dict())
 
 def create_alert_status(db: Session, alert: Alert):
     status = LkpAlertStatus.get_or_create(session=db, status_nm='off')
