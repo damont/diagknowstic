@@ -25,6 +25,7 @@
         <tr>
         <th>Status</th>
         <th>Post Time</th>
+        <th>Notes</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +33,7 @@
         <tr>
             <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
             <td>{{ alert.post_time }}</td>
+            <td>{{ alert.notes }}</td>
         </tr>
         {% endfor %}
     </tbody>

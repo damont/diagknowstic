@@ -11,6 +11,7 @@ def change_alert_status(db: Session, alert_nm: str, status: str):
     db.add(history_record)
     
     old_status.status = LkpAlertStatus.get_or_create(session=db, status_nm=status)
+    old_status.notes = ""
     
     db.commit()
 
@@ -28,6 +29,7 @@ def get_alert_history(db: Session, alert_nm: str, limit=1000):
     return db.query(LkpAlertStatus.status_nm,
                     LkpAlertStatus.status_color,
                     AlertHistory.post_time,
+                    AlertHistory.notes,
                     Alert.alert_nm).\
         join(Alert, Alert.alert_id == AlertHistory.alert_id).\
         join(LkpAlertStatus, LkpAlertStatus.status_id == AlertHistory.status_id).\
