@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
-from orm_models import Alert, AlertHistory, AlertStatus, LkpAlertStatus
+from sqlalchemy import desc, func
+from orm_models import Alert, AlertHistory, AlertStatus, LkpAlertStatus, System
+from typing import Optional
 
 def change_alert_status(db: Session, alert_nm: str, status: str):
     old_status = db.query(AlertStatus).\
@@ -16,13 +17,45 @@ def change_alert_status(db: Session, alert_nm: str, status: str):
     db.commit()
 
 
-def get_all_alerts(db: Session):
-    return db.query(Alert.alert_nm, 
+def get_all_alerts(db: Session, system_nm: Optional[str] = None):
+    all_alerts_q = db.query(Alert.alert_nm, 
                     LkpAlertStatus.status_nm,
                     LkpAlertStatus.status_color).\
         join(AlertStatus, AlertStatus.alert_id == Alert.alert_id).\
-        join(LkpAlertStatus, LkpAlertStatus.status_id == AlertStatus.status_id).\
-        all()
+        join(LkpAlertStatus, LkpAlertStatus.status_id == AlertStatus.status_id)
+        
+    if system_nm:
+        all_alerts_q = all_alerts_q.join(System, System.system_id == Alert.system_id).\
+            filter(System.system_nm == system_nm)
+            
+    return all_alerts_q.all()
+        
+        
+def get_systems(db: Session, system_nm: Optional[str] = None):
+    
+    # Get all of the alerts tied to a system and return the highest id across 
+    # the alerts.
+    session_status_sq = db.query(System.system_id,
+                                 func.max(AlertStatus.status_id).label("max_status_id")).\
+        join(Alert, Alert.system_id == System.system_id).\
+        join(AlertStatus, AlertStatus.alert_id == Alert.alert_id)
+        
+    if system_nm:
+        session_status_sq = session_status_sq.filter(System.system_nm == system_nm)
+        
+    session_status_sq = session_status_sq.group_by(System.system_id).subquery()
+    
+    all_q = db.query(System.system_nm,
+                     System.system_desc,
+                     func.coalesce(LkpAlertStatus.status_nm, "off").label("status_nm"),
+                     func.coalesce(LkpAlertStatus.status_color, "grey").label("status_color")).\
+        outerjoin(session_status_sq, session_status_sq.c.system_id == System.system_id).\
+        outerjoin(LkpAlertStatus, LkpAlertStatus.status_id == session_status_sq.c.max_status_id)
+        
+    if system_nm:
+        all_q = all_q.filter(System.system_nm == system_nm)
+    
+    return all_q.all()
 
 
 def get_alert_history(db: Session, alert_nm: str, limit=1000):

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class AlertNm(BaseModel):
@@ -13,9 +14,24 @@ class AlertBase(AlertNm):
         
 
 class AlertCreate(AlertBase):
-    pass
+    system_nm: Optional[str] = "default"
+    
+    
+class AlertCreateOrm(AlertBase):
+    system_id: int
     
 
 class AlertPyd(AlertBase):
     alert_id: int
+    
+    
+class SystemBase(BaseModel):
+    system_nm: str
+    system_desc: str
+    
+    class Config:
+        orm_mode = True
+    
 
+class SystemPyd(SystemBase):
+    system_id: int
