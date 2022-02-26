@@ -8,12 +8,24 @@
 
 <a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
 
+
+
+<form class="ui form" method="POST">
+    <div class="field">
+        <label>Notes</label>
+        <textarea name="alert_notes">{{ alert.notes }}</textarea>
+        <input type="submit" value="Update" class="ui submit button">
+    </div>
+</form>
+
+
 <h3>Last Three Events</h3>
 <table class="ui celled padded table">
     <thead>
         <tr>
         <th>Status</th>
         <th>Post Time</th>
+        <th>Notes</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +33,7 @@
         <tr>
             <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
             <td>{{ alert.post_time }}</td>
+            <td>{{ alert.notes }}</td>
         </tr>
         {% endfor %}
     </tbody>

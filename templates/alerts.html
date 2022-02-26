@@ -15,7 +15,7 @@
     <tbody>
         {% for alert in alerts %}
         <tr>
-            <td><a href="alert?alert={{alert.alert_nm}}">{{ alert.alert_nm }}</a></td>
+            <td><a href="alertpage?alert={{alert.alert_nm}}">{{ alert.alert_nm }}</a></td>
             <td><a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a></td>
         </tr>
         {% endfor %}
