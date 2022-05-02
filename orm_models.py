@@ -1,7 +1,41 @@
-from sqlalchemy.sql.expression import null
-from alert_db import Base, engine, get_db
-from sqlalchemy import Integer, Text, Column, ForeignKey
+from alert_db import engine as prod_engine, get_db
+from sqlalchemy import Integer, Text, Column, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base, declared_attr
+import re
+
+
+def _cc2jl(string):
+    REGEX = r'(.(?:[^a-z_]+(?=[A-Z_]|$)|[^A-Z_]+))'
+    def _jl_match(match):
+        group = match.group()
+        prefix = bool(match.start() and not group.startswith('_'))
+        return '_' * prefix + group.lower()
+
+    return re.subn(REGEX, _jl_match, string)[0]
+
+
+class SABase(object):
+    
+    @declared_attr
+    def __tablename__(cls):
+        return _cc2jl(cls.__name__)
+
+    @classmethod
+    def get_or_create(cls, session, **kwargs):
+        instance = session.query(cls).filter_by(**kwargs).first()
+        if instance:
+            return instance
+        else:
+            instance = cls(**kwargs)
+            session.add(instance)
+            session.commit()
+            return instance
+
+    post_time = Column(DateTime, server_default=func.now())
+    
+
+Base = declarative_base(cls=SABase)
 
 
 class System(Base):
@@ -51,13 +85,14 @@ class AlertHistory(Base):
                             notes=alert.notes)
 
     
-def init_db():
+def init_db(engine=None, db_func=get_db):
+    if not engine:
+        engine = prod_engine
     Base.metadata.create_all(engine)
 
     # Hacky way to get database session from get_db function.
-    for session in get_db():
-        off = LkpAlertStatus(status_nm='off', status_color='grey')
-        session.add(off)
+    for session in db_func():
+        session.add(LkpAlertStatus(status_nm='off', status_color='grey'))
         session.add(LkpAlertStatus(status_nm='nominal', status_color='green'))
         session.add(LkpAlertStatus(status_nm='silence', status_color='orange'))
         session.add(LkpAlertStatus(status_nm='alert', status_color='red'))
@@ -70,7 +105,7 @@ def init_db():
         alert = Alert(alert_nm='fake', alert_desc='Is everything OK?')
         alert_status = AlertStatus()
         alert_status.alert = alert
-        alert_status.status = off
+        alert_status.status = LkpAlertStatus.get_or_create(session, status_nm='off')
         alert.system = system
 
         session.add(alert_status)
