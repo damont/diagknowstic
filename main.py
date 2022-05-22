@@ -58,10 +58,16 @@ def alertpage(alert: str, request: Request, db: Session = Depends(get_db)):
 
 
 @app.post("/alertpage")
-def alertpage(alert: str, request: Request, alert_notes: Optional[str] = Form(None), db: Session = Depends(get_db)):
+def alertpage(alert: str, 
+              request: Request, 
+              alert_notes: Optional[str] = Form(None), 
+              new_status: Optional[str] = Form(None), 
+              db: Session = Depends(get_db)):
     alert_for_id = get_alert(db, alert)
     if alert_notes:
         update_alert_notes(db, alert_for_id.alert_id, alert_notes)
+    if new_status:
+        change_alert_status(db, alert, new_status)
     # TODO: This seems like a hacky way to return to the alertpage get route.
     redirect_url = request.url_for('alertpage') + f'?alert={alert}'
     return RedirectResponse(redirect_url, status_code=303)
