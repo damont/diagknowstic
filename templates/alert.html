@@ -8,13 +8,23 @@
 
 <a class="ui {{alert.status_color}} label">{{ alert.status_nm }}</a>
 
+<form class="ui form" method="POST">
+    <select class="ui dropdown" name="new_status">
+        <option value="">Update Status</option> 
+        <option value="off">Off</option>
+        <option value="silence">Silence</option>
+        <option value="nominal">Nominal</option>
+        <option value="alert">Alert</option>
+    </select>
+    <input type="submit" value="Update Status" class="ui submit button">
+</form>
 
 
 <form class="ui form" method="POST">
     <div class="field">
         <label>Notes</label>
         <textarea name="alert_notes">{{ alert.notes }}</textarea>
-        <input type="submit" value="Update" class="ui submit button">
+        <input type="submit" value="Update Notes" class="ui submit button">
     </div>
 </form>
 
